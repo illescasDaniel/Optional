@@ -7,9 +7,32 @@
 //
 
 #include <iostream>
+#include "Optional.hpp"
+#include "OldOptional.hpp"
 
-int main(int argc, const char * argv[]) {
-	// insert code here...
-	std::cout << "Hello, World!\n";
-	return 0;
+using namespace evt;
+using namespace std;
+
+// When the return type is an Optional you can return the type or null
+Optional<string> test(bool testing) {
+	string test = "daniel";
+	if (testing) { return nullptr; }
+	else { return test; }
+}
+
+int main() {
+	
+	Optional<string> name("hi");
+	cout << name.valueOr("null") << endl;
+	cout << name << endl;
+	
+	if (name.isNotNull()) {
+		cout << "Lol" << endl;
+	}
+	
+	cout << test(0).valueOr("null") << endl;
+	
+	// For older C++ versions
+	OldOptional<int> number(10);
+	cout << number << endl;
 }
