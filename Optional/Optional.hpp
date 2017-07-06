@@ -30,35 +30,65 @@ namespace evt {
 	class Optional {
 		
 	private:
-		Type* value { nullptr };
+		Type* value_ { nullptr };
 		
 	public:
 		
-		Optional(const std::nullptr_t& value = nullptr) { this->value = value; }
+		Optional(const std::nullptr_t& value = nullptr) { this->value_ = value; }
 		
 		Optional(const Type& value) {
-			this->value = new Type{value};
+			this->value_ = new Type{value};
 		}
 		
 		~Optional() {
-			delete value;
-			value = nullptr;
+			if (this->isNotNull()) {
+				delete value_;
+				value_ = nullptr;
+			}
 		}
 		
 		inline Type valueOr(const Type& other) {
-			return (value != nullptr) ? *value : other;
+			return (this->value_ != nullptr) ? this->value() : other;
 		}
 		
 		inline bool isNull() const {
-			return value == nullptr;
+			return value_ == nullptr;
 		}
 		
 		inline bool isNotNull() const {
-			return value != nullptr;
+			return value_ != nullptr;
+		}
+		
+		Optional& operator=(const Optional& other) {
+			if (this->isNull()) {
+				this->value_ = new Type{other.value()};
+			}
+			else {
+				*this->value_ = other.value();
+			}
+			return *this;
+		}
+		
+		Optional& operator=(const Type& value) {
+			if (this->isNull()) {
+				this->value_ = new Type{value};
+			}
+			else {
+				*this->value_ = value;
+			}
+			return *this;
+		}
+		
+		inline Type& operator*() const {
+			return *value_;
+		}
+		
+		inline Type& value() const {
+			return *value_;
 		}
 		
 		friend std::ostream& operator<<(std::ostream& os, const Optional& optionalValue) {
-			return (optionalValue.isNotNull()) ? (os << *optionalValue.value) : os;
+			return (optionalValue.isNotNull()) ? (os << optionalValue.value()) : os;
 		}
 	};
 }

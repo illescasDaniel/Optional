@@ -8,12 +8,11 @@
 
 #include <iostream>
 #include "Optional.hpp"
-#include "OldOptional.hpp"
 
 using namespace evt;
 using namespace std;
 
-// When the return type is an Optional you can return the type or null
+// When the return type is an Optional you can return the original value or null
 Optional<string> test(bool testing) {
 	string test = "daniel";
 	if (testing) { return nullptr; }
@@ -32,7 +31,16 @@ int main() {
 	
 	cout << test(0).valueOr("null") << endl;
 	
-	// For older C++ versions
-	OldOptional<int> number(10);
-	cout << number << endl;
+	Optional<int> number1(1);
+	Optional<int> number2(2);
+	
+	cout << *number1 + *number2 << endl;
+	
+	number1 = number2;
+	
+	cout << number1 << " " << number2 << endl;
+	
+	number2 = 100;
+	
+	cout << number1 << " " << number2 << endl;
 }
