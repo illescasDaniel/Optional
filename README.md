@@ -18,6 +18,13 @@ inline Type valueOr(const Type& other)
 inline bool isNull() const
 inline bool isNotNull() const
 
+Optional& operator=(const Optional& other)
+Optional& operator=(const Type& value)
+
+// Returns the internal value
+inline Type& operator*() const
+inline Type& value() const
+
 // You can use the value with an ostream like "cout"; if the value is null, it will return an empty std::ostream
 friend std::ostream& operator<<(std::ostream& os, const Optional& optionalValue)
 ```
