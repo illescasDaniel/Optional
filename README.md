@@ -7,7 +7,7 @@ A class to manage an optional value; an object of the class can be either nullpt
 
 Class Structure
 ----
-
+```c++
 // Constructors
 Optional(const std::nullptr_t& value = nullptr)
 Optional(const Type& value)
@@ -20,5 +20,5 @@ inline bool isNotNull() const
 
 // You can use the value with an ostream like "cout"; if the value is null, it will return an empty osstream
 friend std::ostream& operator<<(std::ostream& os, const Optional& optionalValue)
-
+```
 **Note:** additionally, an "OldOptional" class is included in case it has to be used in older C++ versions.
