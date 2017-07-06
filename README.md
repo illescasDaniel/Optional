@@ -15,6 +15,9 @@ Optional(const Type& value)
 // Return the original value or nullptr in case the object is not initialised to a non-null value
 inline Type valueOr(const Type& other)
 
+// Return the original value or an empty string in case the object is not initialised
+inline Type orEmpty()
+
 inline bool isNull() const
 inline bool isNotNull() const
 
