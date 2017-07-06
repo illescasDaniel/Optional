@@ -14,15 +14,15 @@ using namespace std;
 
 // When the return type is an Optional you can return the original value or null
 Optional<string> test(bool testing) {
-	string test = "daniel";
+	string test("daniel");
 	if (testing) { return nullptr; }
 	else { return test; }
 }
 
 int main() {
 	
-	Optional<string> name("hi");
-	cout << name.valueOr("null") << endl;
+	Optional<string> name {"hi"};
+	cout << name.orEmpty() << endl;
 	cout << name << endl;
 	
 	if (name.isNotNull()) {
@@ -31,10 +31,12 @@ int main() {
 	
 	cout << test(0).valueOr("null") << endl;
 	
-	Optional<int> number1(1);
-	Optional<int> number2(2);
+	Optional<int> number1 {1};
+	Optional<int> number2 {2};
 	
 	cout << *number1 + *number2 << endl;
+	
+	cout << boolalpha << (number1 == number2) << endl;
 	
 	number1 = number2;
 	

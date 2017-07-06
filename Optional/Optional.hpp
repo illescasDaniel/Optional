@@ -51,6 +51,10 @@ namespace evt {
 			return (this->value_ != nullptr) ? this->value() : other;
 		}
 		
+		inline Type orEmpty() {
+			return (this->value_ != nullptr) ? this->value() : "";
+		}
+		
 		inline bool isNull() const {
 			return value_ == nullptr;
 		}
@@ -77,6 +81,14 @@ namespace evt {
 				*this->value_ = value;
 			}
 			return *this;
+		}
+		
+		inline bool operator==(const Optional& other) const {
+			return value_ == other.value_;
+		}
+		
+		inline bool operator!=(const Optional& other) const {
+			return value_ != other.value_;
 		}
 		
 		inline Type& operator*() const {
