@@ -24,6 +24,9 @@
 
 #pragma once
 
+#include <cstddef>
+#include <ostream>
+
 namespace evt {
 	
 	template <typename Type>
@@ -104,3 +107,5 @@ namespace evt {
 		}
 	};
 }
+
+
