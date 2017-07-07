@@ -52,7 +52,7 @@ namespace evt {
 		}
 		
 		inline Type orEmpty() const {
-			return (this->isNotNull()) ? this->value() : "";
+			return (this->isNotNull()) ? this->value() : Type{};
 		}
 		
 		inline bool isNull() const {
@@ -100,7 +100,7 @@ namespace evt {
 		}
 		
 		friend std::ostream& operator<<(std::ostream& os, const Optional& optionalValue) {
-			return (optionalValue.isNotNull()) ? (os << optionalValue.value()) : os;
+			return os << optionalValue.orEmpty();
 		}
 	};
 }

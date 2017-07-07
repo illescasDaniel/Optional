@@ -48,4 +48,9 @@ int main() {
 	number2 = 100;
 	
 	cout << number1 << " " << number2 << endl;
+	
+	//
+	
+	Optional<int> test{10};
+	cout << test << endl;
 }
