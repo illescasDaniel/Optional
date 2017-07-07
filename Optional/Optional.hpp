@@ -47,12 +47,12 @@ namespace evt {
 			}
 		}
 		
-		inline Type valueOr(const Type& other) {
-			return (this->value_ != nullptr) ? this->value() : other;
+		inline Type valueOr(const Type& other) const {
+			return (this->isNotNull()) ? this->value() : other;
 		}
 		
-		inline Type orEmpty() {
-			return (this->value_ != nullptr) ? this->value() : "";
+		inline Type orEmpty() const {
+			return (this->isNotNull()) ? this->value() : "";
 		}
 		
 		inline bool isNull() const {

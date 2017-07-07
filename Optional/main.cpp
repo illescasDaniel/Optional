@@ -12,7 +12,7 @@
 using namespace evt;
 using namespace std;
 
-// When the return type is an Optional you can return the original value or null
+// When the return type is an Optional you can return a value of the internal type or null
 Optional<string> test(bool testing) {
 	string test("daniel");
 	if (testing) { return nullptr; }
@@ -24,6 +24,9 @@ int main() {
 	Optional<string> name {"hi"};
 	cout << name.orEmpty() << endl;
 	cout << name << endl;
+	
+	// Calling methods
+	cout << name.orEmpty().length() << endl;
 	
 	if (name.isNotNull()) {
 		cout << "Lol" << endl;
