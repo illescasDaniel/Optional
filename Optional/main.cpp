@@ -28,9 +28,13 @@ int main() {
 	// Calling methods
 	cout << name.orEmpty().length() << endl;
 	
-	if (name.isNotNull()) {
+	if (name) {
 		cout << "Lol" << endl;
 	}
+	
+	string otherName = name;
+	
+	cout << otherName << endl;
 	
 	cout << test(0).valueOr("null") << endl;
 	

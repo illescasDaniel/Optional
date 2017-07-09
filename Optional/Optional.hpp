@@ -94,12 +94,20 @@ namespace evt {
 			return value_ != other.value_;
 		}
 		
-		inline Type& operator~() const {
+		inline Type& operator*() const {
 			return *value_;
 		}
 		
 		inline Type& value() const {
 			return *value_;
+		}
+		
+		inline operator bool() const {
+			return this->isNotNull();
+		}
+		
+		inline operator Type() const {
+			return this->orEmpty();
 		}
 		
 		friend std::ostream& operator<<(std::ostream& os, const Optional& optionalValue) {
