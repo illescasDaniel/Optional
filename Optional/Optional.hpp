@@ -94,7 +94,7 @@ namespace evt {
 			return value_ != other.value_;
 		}
 		
-		inline Type& operator*() const {
+		inline Type& operator~() const {
 			return *value_;
 		}
 		
