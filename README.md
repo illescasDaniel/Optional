@@ -1,6 +1,6 @@
 # Optional
 
-[![Version](https://img.shields.io/badge/version-1.2.1-green.svg)](https://github.com/illescasDaniel/Optional/releases)
+[![Version](https://img.shields.io/badge/version-1.2.2-green.svg)](https://github.com/illescasDaniel/Optional/releases)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/illescasDaniel/Optional/blob/master/LICENCE)
 
 A class to manage an optional value; an object of the class can be either nullptr or the original value.

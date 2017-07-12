@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Daniel Illescas Romero
+ Copyright (c) 2017 Daniel Illescas Romero <https://github.com/illescasDaniel>
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -67,7 +67,7 @@ namespace evt {
 		}
 		
 		Optional& operator=(const Optional& other) {
-			if (this->isNull()) {
+			if (this->isNull() and other.value_ != nullptr) {
 				this->value_ = new Type{other.value()};
 			}
 			else {
