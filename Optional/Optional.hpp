@@ -26,8 +26,21 @@
 
 #include <cstddef>
 #include <ostream>
+#include <stdexcept>
+
+#if (__cplusplus > 201103L)
+#define CONSTEXPR constexpr
+#else
+#define CONSTEXPR
+#endif
 
 namespace evt {
+	
+	namespace internalEVT {
+		struct badAccess: public std::runtime_error {
+			badAccess(): std::runtime_error("Null pointer found") {}
+		};
+	}
 	
 	template <typename Type>
 	class Optional {
@@ -35,12 +48,77 @@ namespace evt {
 	private:
 		Type* value_ { nullptr };
 		
+		void freePointer() {
+			if (this->isNotNull()) {
+				delete value_;
+				value_ = nullptr;
+			}
+		}
+		
 	public:
 		
-		Optional(const std::nullptr_t& value = nullptr) { this->value_ = value; }
+		CONSTEXPR Optional(const Optional& other) { this->operator=(other); }
+		CONSTEXPR Optional(std::nullptr_t value = nullptr) { this->value_ = value; }
+		CONSTEXPR Optional(const Type& value) { this->value_ = new Type{value}; }
+		CONSTEXPR Optional(Type&& value) { this->value_ = new Type{std::move(value)}; }
 		
-		Optional(const Type& value) {
-			this->value_ = new Type{value};
+		CONSTEXPR Type valueOr(const Type& other) const { return (this->isNotNull()) ? this->value() : other; }
+		CONSTEXPR Type orEmpty() const { return (this->isNotNull()) ? this->value() : Type{}; }
+		CONSTEXPR bool isNull() const { return value_ == nullptr; }
+		CONSTEXPR bool isNotNull() const { return value_ != nullptr; }
+		CONSTEXPR bool operator==(const Optional& other) const { return value_ == other.value_; }
+		CONSTEXPR bool operator!=(const Optional& other) const { return value_ != other.value_; }
+		CONSTEXPR bool operator==(const Type& otherValue) const noexcept { return this->isNotNull() ? (*value_ == otherValue) : false; }
+		CONSTEXPR bool operator!=(const Type& otherValue) const noexcept { return this->isNotNull() ? (*value_ != otherValue) : false; }
+		CONSTEXPR bool operator==(std::nullptr_t none) const noexcept { return value_ == none; }
+		CONSTEXPR bool operator!=(std::nullptr_t none) const noexcept { return value_ != none; }
+		CONSTEXPR Type& operator*() const { return *value_; }
+		CONSTEXPR Type& value() const {
+			if (this->isNull()) { throw internalEVT::badAccess(); }
+			return *value_;
+		}
+		CONSTEXPR explicit operator bool() const { return this->isNotNull(); }
+		CONSTEXPR operator Type() const { return this->orEmpty(); }
+		
+		CONSTEXPR friend std::ostream& operator<<(std::ostream& os, const Optional& optionalValue) {
+			return os << optionalValue.orEmpty();
+		}
+		
+		CONSTEXPR Optional& operator=(const Optional& other) {
+			freePointer();
+			if (other.isNull()) {
+				this->value_ = nullptr;
+			} else {
+				this->value_ = new Type{other.value()};
+			}
+			
+			return *this;
+		}
+		
+		CONSTEXPR Optional& operator=(const Type& value) {
+			if (this->isNull()) {
+				this->value_ = new Type{value};
+			} else {
+				*this->value_ = value;
+			}
+			return *this;
+		}
+		
+		CONSTEXPR Optional& operator=(Type&& value) {
+			if (this->isNull()) {
+				this->value_ = new Type{std::move(value)};
+			} else {
+				*this->value_ = std::move(value);
+			}
+			return *this;
+		}
+		
+		CONSTEXPR Optional& operator=(std::nullptr_t none) {
+			if (none == nullptr) {
+				freePointer();
+				std::cout << this->isNotNull() << std::endl;
+			}
+			return *this;
 		}
 		
 		~Optional() {
@@ -49,71 +127,5 @@ namespace evt {
 				value_ = nullptr;
 			}
 		}
-		
-		inline Type valueOr(const Type& other) const {
-			return (this->isNotNull()) ? this->value() : other;
-		}
-		
-		inline Type orEmpty() const {
-			return (this->isNotNull()) ? this->value() : Type{};
-		}
-		
-		inline bool isNull() const {
-			return value_ == nullptr;
-		}
-		
-		inline bool isNotNull() const {
-			return value_ != nullptr;
-		}
-		
-		Optional& operator=(const Optional& other) {
-			if (this->isNull() and other.value_ != nullptr) {
-				this->value_ = new Type{other.value()};
-			}
-			else {
-				*this->value_ = other.value();
-			}
-			return *this;
-		}
-		
-		Optional& operator=(const Type& value) {
-			if (this->isNull()) {
-				this->value_ = new Type{value};
-			}
-			else {
-				*this->value_ = value;
-			}
-			return *this;
-		}
-		
-		inline bool operator==(const Optional& other) const {
-			return value_ == other.value_;
-		}
-		
-		inline bool operator!=(const Optional& other) const {
-			return value_ != other.value_;
-		}
-		
-		inline Type& operator*() const {
-			return *value_;
-		}
-		
-		inline Type& value() const {
-			return *value_;
-		}
-		
-		inline operator bool() const {
-			return this->isNotNull();
-		}
-		
-		inline operator Type() const {
-			return this->orEmpty();
-		}
-		
-		friend std::ostream& operator<<(std::ostream& os, const Optional& optionalValue) {
-			return os << optionalValue.orEmpty();
-		}
 	};
 }
-
-

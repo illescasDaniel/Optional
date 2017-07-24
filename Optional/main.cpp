@@ -21,9 +21,13 @@ Optional<string> test(bool testing) {
 
 int main() {
 	
-	Optional<string> name {"hi"};
+	string originalName = "hi";
+	
+	Optional<string> name {std::move(originalName)};
 	cout << name.orEmpty() << endl;
 	cout << name << endl;
+	
+	cout << "Original name: " << originalName << endl;
 	
 	// Calling methods
 	cout << name.orEmpty().length() << endl;
@@ -57,4 +61,17 @@ int main() {
 	
 	Optional<int> test{10};
 	cout << test << endl;
+	
+	Optional<int> test2{test};
+	cout << test2 << endl;
+	
+	cout << (test2 == 10) << endl;
+	
+	if (test2.isNotNull()) {
+		cout << "not null!" << endl;
+	}
+	
+	cout << (test2 == nullptr) << endl;
+	test2 = nullptr;
+	// throw exception: cout << (test2 == 10) << endl;
 }
